@@ -1,0 +1,3 @@
+/home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles/rebuild_cache.dir
+/home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles/edit_cache.dir
+/home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles/torchxor.dir

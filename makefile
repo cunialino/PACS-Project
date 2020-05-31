@@ -1,7 +1,7 @@
 CXX      := mpiCC
 CXXFLAGS := -std=gnu++17 -Wall 
-BRAID_DIR:= /home/elia/build/xbraid/braid/
-LDFLAGS  := -L$(BRAID_DIR) -L$(OPENNN_DIR)Release/ -lbraid -ldl -lstdc++fs 
+BRAID_DIR:= libs/xbraid/braid/
+LDFLAGS  := -L$(BRAID_DIR) -lbraid -ldl -lstdc++fs 
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps

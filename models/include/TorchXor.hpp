@@ -18,7 +18,7 @@ class TorchXor final: public Model{
     const std::string data_file;
     const bool cuda_available = torch::cuda::is_available();
     const double alpha;
-    torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
+    //torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
     SDL train_loader;
     torch::nn::Sequential net;
   public:
@@ -36,7 +36,7 @@ class TorchXor final: public Model{
     }
     void set_weights(std::vector<double> &ws){
         torch::Tensor tmp = torch::from_blob(ws.data(), {static_cast<int64_t>(ws.size())}, torch::kDouble).clone();
-        torch::nn::utils::vector_to_parameters(tmp.to(device), net->parameters());
+        torch::nn::utils::vector_to_parameters(tmp, net->parameters());
         return;
     }
 

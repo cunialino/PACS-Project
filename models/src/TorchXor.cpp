@@ -5,7 +5,7 @@
 TorchXor::TorchXor(int64_t bs, double lr, std::string data_file_): batch_size(bs),data_file(data_file_), alpha(lr){
 
     net = torch::nn::Sequential(torch::nn::Linear(2, 4), torch::nn::ReLU(), torch::nn::Linear(4, 6), torch::nn::ReLU(), torch::nn::Linear(6, 1), torch::nn::Sigmoid());
-    net->to(device);
+    net;
     net->to(torch::kDouble);
     NumP = torch::nn::utils::parameters_to_vector(net->parameters()).sizes()[0];
     auto train_dataset = CustomDataset(data_file).map(torch::data::transforms::Stack<>());
@@ -19,8 +19,8 @@ void TorchXor::epoch(int lev) {
     torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::pow(1.25, lev)*alpha).momentum(std::pow(1.25, lev)*0.1));
     for (auto& batch : *train_loader) {
         // Transfer images and target labels to device
-        auto data = batch.data.to(device).to(torch::kDouble);
-        auto target = batch.target.to(device);
+        auto data = batch.data.to(torch::kDouble);
+        auto target = batch.target;
 
         // Forward pass
         auto output = net->forward(data);
@@ -57,8 +57,8 @@ void TorchXor::eval(void){
     size_t num_correct = 0;
 
     for (const auto& batch : *test_loader) {
-        auto data = batch.data.to(device).to(torch::kDouble);
-        auto target = batch.target.to(device);
+        auto data = batch.data.to(torch::kDouble);
+        auto target = batch.target;
 
         auto output = net->forward(data);
 
