@@ -1,3 +1,0 @@
-/home/elia/Università/PACS/PACS-Project/models/TorchMNIST/CMakeFiles/rebuild_cache.dir
-/home/elia/Università/PACS/PACS-Project/models/TorchMNIST/CMakeFiles/edit_cache.dir
-/home/elia/Università/PACS/PACS-Project/models/TorchMNIST/CMakeFiles/torchmnist.dir
