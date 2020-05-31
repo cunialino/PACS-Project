@@ -1,3 +1,6 @@
 [submodule "libs/xbraid"]
 	path = libs/xbraid
 	url = https://github.com/XBraid/xbraid
+[submodule "libs/opennn"]
+	path = libs/opennn
+	url = https://github.com/Artelnics/opennn.git
