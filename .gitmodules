@@ -1,0 +1,3 @@
+[submodule "libs/xbraid"]
+	path = libs/xbraid
+	url = https://github.com/XBraid/xbraid
