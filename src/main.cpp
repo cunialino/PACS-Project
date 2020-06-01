@@ -196,9 +196,6 @@ int main (int argc, char *argv[])
         app.set_weights(u->value);
         app.net->epoch(0);
         app.update_vector(u);
-        if(i%10 == 0){
-            std::cout << "Iteration: " << i << std::endl;
-        }
     }
     app.net->set_weights(u->value);
     tend = time(0);
