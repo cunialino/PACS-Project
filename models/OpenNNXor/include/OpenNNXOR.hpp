@@ -16,9 +16,10 @@ class OpenNNXor final: public Model{
 
         std::unique_ptr<OpenNN::TrainingStrategy> training_strategy;
         //std::unique_ptr<OpenNN::StochasticGradientDescent> opt_pointer;
+        const double alpha;
 
     public:
-        OpenNNXor(); 
+        OpenNNXor(double); 
 
         void epoch(int lev) override;
 

@@ -1,6 +1,7 @@
 #include "OpenNNXOR.hpp"
+#include <cmath>
 
-OpenNNXor::OpenNNXor()  {
+OpenNNXor::OpenNNXor(double a_): alpha(a_)  {
 
   std::vector<size_t> net_struct({2, 6, 1});
   OpenNN::NeuralNetwork* net = new OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::Classification, net_struct);
@@ -33,7 +34,7 @@ OpenNNXor::OpenNNXor()  {
 void OpenNNXor::epoch(int lev){
 
     auto opt_pointer = training_strategy->get_stochastic_gradient_descent_pointer();
-    opt_pointer->set_initial_learning_rate(min(8.0, pow(1.25, lev)));
+    opt_pointer->set_initial_learning_rate(min(8.0, std::pow(1.25, lev)*alpha));
 
     // Perform Training:
     training_strategy->perform_training();
@@ -83,7 +84,7 @@ void OpenNNXor::eval(void){
 }
 
 extern "C"{
-    Model* build(void){
-        return new OpenNNXor();
+    Model* build(double alpha){
+        return new OpenNNXor(alpha);
     }
 }
