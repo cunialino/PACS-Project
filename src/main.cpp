@@ -3,6 +3,7 @@
 #include <string.h>
 #include <memory>
 #include <vector>
+#include <ctime>
 
 
 //Reading models directory to let you choose what to train
@@ -185,6 +186,9 @@ int main (int argc, char *argv[])
   MyBraidApp app(MPI_COMM_WORLD, rank, model, 0, ntime, ntime);
   if(seq && rank == 0){
 
+    time_t tstart, tend; 
+    tstart = time(0);
+
     BraidVector *u = new BraidVector(std::vector<double>(app.net->get_NumP()));
     app.Init(0, (braid_Vector*) (&u));
     std::cout << "Starting serial trainig" << std::endl;
@@ -197,6 +201,8 @@ int main (int argc, char *argv[])
         }
     }
     app.net->set_weights(u->value);
+    tend = time(0);
+    std::cout << "Serial training completed in " << difftime(tend, tstart) << " seconds(s)" << std::endl;
   }
   else if(seq == 0){
     BraidCore core(MPI_COMM_WORLD, &app);
