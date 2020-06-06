@@ -10,12 +10,9 @@
 
 class OpenNNXor final: public Model{
     private:
-        //std::unique_ptr<OpenNN::NeuralNetwork> net;
-        //std::unique_ptr<OpenNN::DataSet> data_set = std::make_unique<OpenNN::DataSet>("/home/elia/build/xbraid/examples/PACS-Project/data/mydata.csv", ',', false);
         OpenNN::DataSet* data_set = new OpenNN::DataSet("/home/elia/build/xbraid/examples/PACS-Project/data/mydata.csv", ',', false);
 
         std::unique_ptr<OpenNN::TrainingStrategy> training_strategy;
-        //std::unique_ptr<OpenNN::StochasticGradientDescent> opt_pointer;
         const double alpha;
 
     public:

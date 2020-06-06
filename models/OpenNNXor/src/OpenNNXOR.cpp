@@ -29,6 +29,11 @@ OpenNNXor::OpenNNXor(double a_): alpha(a_)  {
     NumP += l->get_parameters_number();
   }
 
+  //OpenNN::ScalingLayer* scaling_layer_pointer = net->get_scaling_layer_pointer();
+  //scaling_layer_pointer->set_scaling_methods("NoScaling");
+
+  
+
 }
 
 void OpenNNXor::epoch(int lev){

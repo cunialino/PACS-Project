@@ -45,7 +45,8 @@ int MyBraidApp::Init(double t, braid_Vector *u_ptr) {
    
   std::vector<double> vec(net->get_NumP(), 0);
   BraidVector *u = new BraidVector(vec);
-  update_vector(u);
+  if(t == 0)
+    update_vector(u);
   *u_ptr = (braid_Vector) u;
 
   return 0;

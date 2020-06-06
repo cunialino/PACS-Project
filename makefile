@@ -11,7 +11,15 @@ SRC      := $(wildcard src/*.cpp)
 
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-all: build $(APP_DIR)/$(TARGET)
+ModelsDir := $(shell find  models/ -maxdepth 1 -mindepth 1 -type d)
+#$(info $(ModelsDir))
+
+all: build $(APP_DIR)/$(TARGET) $(ModelsDir)
+
+
+$(ModelsDir): 
+	@$(MAKE) --no-print-directory -C $@ all
+	
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -21,7 +29,7 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) -o $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
 
-.PHONY: all build clean debug release
+.PHONY: all build clean debug release $(ModelsDir)
 
 build:
 	@mkdir -p $(APP_DIR)
