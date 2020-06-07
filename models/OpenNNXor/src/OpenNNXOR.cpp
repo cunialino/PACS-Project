@@ -6,7 +6,7 @@ OpenNNXor::OpenNNXor(double a_): alpha(a_)  {
   std::vector<size_t> net_struct({2, 4, 4, 1});
   OpenNN::NeuralNetwork* net = new OpenNN::NeuralNetwork(OpenNN::NeuralNetwork::Classification, net_struct);
 
-  OpenNN::DataSet* data_set = new OpenNN::DataSet("/home/elia/build/xbraid/examples/PACS-Project/data/mydata.csv", ',', false);
+  OpenNN::DataSet* data_set = new OpenNN::DataSet("data/xor.csv", ',', false);
   data_set->set_columns_uses({"Input", "Input", "Target"});
   data_set->split_instances_random();
 

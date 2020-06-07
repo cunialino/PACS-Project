@@ -52,7 +52,8 @@ int main (int argc, char *argv[])
   int           min_coarse = 10;
   int           skip       = 0;
   int           seq        = 0;
-  double base_alpha = 1; 
+  double base_alpha = 1, max_alpha = 5, mult = 1.25;
+
 
   int           arg_index;
   //Command line arguments: 
@@ -150,6 +151,7 @@ int main (int argc, char *argv[])
 
   std::string suffix(".so");
   std::filesystem::path cwd = std::filesystem::current_path();
+
   unsigned indM = 0;
 
   if(rank == 0)
@@ -163,16 +165,21 @@ int main (int argc, char *argv[])
         models_map.insert(std::make_pair(indM++, fullpath));
     }
   }
+
   if(rank == 0)
     std::cin >> indM;
+
   MPI_Bcast(&indM, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
+
   void* handle = dlopen(models_map[indM].c_str(), RTLD_NOW);
+
   if(handle == nullptr){
       std::cerr << dlerror() << std::endl;
       MPI_Finalize();
       return 0;
   }
-  Model* (*mkr)(double); 
+  Model* (*mkr)(double, double, double, int, int); 
+
   *(void**)(&mkr) = dlsym(handle, "build");
 
   if(mkr == nullptr){
@@ -180,7 +187,7 @@ int main (int argc, char *argv[])
       MPI_Finalize();
     return 0;
   }
-  std::unique_ptr<Model> model((*mkr)(base_alpha));
+  std::unique_ptr<Model> model((*mkr)(base_alpha, max_alpha, mult, ntime, max_levels));
 
   // set up app structure
   MyBraidApp app(MPI_COMM_WORLD, rank, model, 0, ntime, ntime);
@@ -206,7 +213,7 @@ int main (int argc, char *argv[])
     core.SetPrintLevel(print_level);
     core.SetMaxLevels(max_levels);
     core.SetMaxIter(max_iter);
-    core.SetAbsTol(tol);
+    core.SetAbsTol(tol*ntime);
     core.SetCFactor(-1, cfactor);
     core.SetNRelax(-1, nrelax);
     core.SetSkip(skip);

@@ -84,7 +84,7 @@ int MyBraidApp::SpatialNorm(braid_Vector  u_, double       *norm_ptr) {
  for(unsigned  i = 0; i < net->get_NumP(); i++){
    dot += u->value[i]*u->value[i];
  }
- *norm_ptr = sqrt(dot)/(ntime);
+ *norm_ptr = sqrt(dot);
 
   return 0;
 }
@@ -143,7 +143,6 @@ int MyBraidApp::Access(braid_Vector u_, BraidAccessStatus &astatus) {
         MPI_Bcast(solWeights.data(), net->get_NumP(), MPI_DOUBLE, solRank, comm_t);
     }
     else if(t == tstop){
-
         MPI_Bcast(u->value.data(), net->get_NumP(), MPI_DOUBLE, solRank, comm_t);
         solWeights = u->value;
     }

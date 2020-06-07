@@ -68,10 +68,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/elia/Università/PACS/PACS-Project/models/TorchXor
+CMAKE_SOURCE_DIR = /home/elia/Università/PACS/PACS-Project/models/TorchSign
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/elia/Università/PACS/PACS-Project/models/TorchXor
+CMAKE_BINARY_DIR = /home/elia/Università/PACS/PACS-Project/models/TorchSign
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -100,9 +100,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles /home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/elia/Università/PACS/PACS-Project/models/TorchSign/CMakeFiles /home/elia/Università/PACS/PACS-Project/models/TorchSign/CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/elia/Università/PACS/PACS-Project/models/TorchXor/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/elia/Università/PACS/PACS-Project/models/TorchSign/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -131,44 +131,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named torchxor
+# Target rules for targets named torchsign
 
 # Build rule for target.
-torchxor: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 torchxor
-.PHONY : torchxor
+torchsign: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 torchsign
+.PHONY : torchsign
 
 # fast build rule for target.
-torchxor/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchxor.dir/build.make CMakeFiles/torchxor.dir/build
-.PHONY : torchxor/fast
+torchsign/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchsign.dir/build.make CMakeFiles/torchsign.dir/build
+.PHONY : torchsign/fast
 
-src/TorchXor.o: src/TorchXor.cpp.o
+src/TorchSign.o: src/TorchSign.cpp.o
 
-.PHONY : src/TorchXor.o
+.PHONY : src/TorchSign.o
 
 # target to build an object file
-src/TorchXor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchxor.dir/build.make CMakeFiles/torchxor.dir/src/TorchXor.cpp.o
-.PHONY : src/TorchXor.cpp.o
+src/TorchSign.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchsign.dir/build.make CMakeFiles/torchsign.dir/src/TorchSign.cpp.o
+.PHONY : src/TorchSign.cpp.o
 
-src/TorchXor.i: src/TorchXor.cpp.i
+src/TorchSign.i: src/TorchSign.cpp.i
 
-.PHONY : src/TorchXor.i
+.PHONY : src/TorchSign.i
 
 # target to preprocess a source file
-src/TorchXor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchxor.dir/build.make CMakeFiles/torchxor.dir/src/TorchXor.cpp.i
-.PHONY : src/TorchXor.cpp.i
+src/TorchSign.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchsign.dir/build.make CMakeFiles/torchsign.dir/src/TorchSign.cpp.i
+.PHONY : src/TorchSign.cpp.i
 
-src/TorchXor.s: src/TorchXor.cpp.s
+src/TorchSign.s: src/TorchSign.cpp.s
 
-.PHONY : src/TorchXor.s
+.PHONY : src/TorchSign.s
 
 # target to generate assembly for a file
-src/TorchXor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchxor.dir/build.make CMakeFiles/torchxor.dir/src/TorchXor.cpp.s
-.PHONY : src/TorchXor.cpp.s
+src/TorchSign.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/torchsign.dir/build.make CMakeFiles/torchsign.dir/src/TorchSign.cpp.s
+.PHONY : src/TorchSign.cpp.s
 
 # Help Target
 help:
@@ -178,10 +178,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... torchxor"
-	@echo "... src/TorchXor.o"
-	@echo "... src/TorchXor.i"
-	@echo "... src/TorchXor.s"
+	@echo "... torchsign"
+	@echo "... src/TorchSign.o"
+	@echo "... src/TorchSign.i"
+	@echo "... src/TorchSign.s"
 .PHONY : help
 
 

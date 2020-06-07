@@ -9,9 +9,19 @@
 
 
 namespace {
+  struct Dropout: torch::nn::Module{
+      Dropout(){}
+    torch::Tensor forward(torch::Tensor x){ 
+        x = torch::dropout(x, 0.5, is_training());
+        return x;
+    }
+
+  };
+
   struct Net : torch::nn::Module {
     Net() {
-        seq = torch::nn::Sequential(torch::nn::Linear(2, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 1), torch::nn::Sigmoid());
+        seq = torch::nn::Sequential(torch::nn::Linear(torch::nn::LinearOptions(2, 4)), torch::nn::ReLU(), torch::nn::Linear(torch::nn::LinearOptions(4, 4)), torch::nn::ReLU(),
+                torch::nn::Linear(torch::nn::LinearOptions(4, 1)), torch::nn::Sigmoid());
         register_module("seq", seq);
     }
 
@@ -23,23 +33,22 @@ namespace {
   };
 }
 
-//To define this i used a demangler....
 using SDL = std::unique_ptr<torch::data::StatelessDataLoader<torch::data::datasets::MapDataset<CustomDataset, torch::data::transforms::Stack<torch::data::Example<at::Tensor, at::Tensor> > >, torch::data::samplers::RandomSampler>, std::default_delete<torch::data::StatelessDataLoader<torch::data::datasets::MapDataset<CustomDataset, torch::data::transforms::Stack<torch::data::Example<at::Tensor, at::Tensor> > >, torch::data::samplers::RandomSampler> > >;
 
-class TorchXor final: public Model{
+class TorchSign final: public Model{
 
   private:
-    const int64_t batch_size;
+    const int ntime, max_levels;
     const std::string data_file;
     const bool cuda_available = torch::cuda::is_available();
-    const double alpha;
+    const double alpha, max_alpha, alpha_mult;
     torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
     SDL train_loader;
     //torch::nn::Sequential net;
     std::unique_ptr<Net> net = std::make_unique<Net>();
 
   public:
-    TorchXor(int64_t bs, double alpha, std::string data_file_=std::string("data/mydata.csv"));
+    TorchSign(double alpha, double, double, int, int, std::string data_file_=std::string("data/xor.csv"));
 
     void epoch(int lev) override;
 

@@ -8,15 +8,22 @@ TorchXor::TorchXor(int64_t bs, double lr, std::string data_file_): batch_size(bs
     net->to(device);
     net->to(torch::kDouble);
     NumP = torch::nn::utils::parameters_to_vector(net->parameters()).sizes()[0];
-    auto train_dataset = CustomDataset(data_file).map(torch::data::transforms::Stack<>());
+    auto dataset = CustomDataset(data_file).map(torch::data::transforms::Stack<>());
+
     // Data loader
-    train_loader = torch::data::make_data_loader<torch::data::samplers::RandomSampler>(std::move(train_dataset), batch_size);
+    auto num_train = std::round(0.8*dataset.size().value());
+    num_train = dataset.size().value();
+    auto num_test = dataset.size().value() - num_train;
+    auto samp = torch::data::samplers::RandomSampler(num_train, torch::kDouble);
+    std::cout << "Training - Testing: " << num_train << " - " << num_test << std::endl;
+    train_loader = torch::data::make_data_loader(dataset, samp, torch::data::DataLoaderOptions().batch_size(batch_size));
 
 }
 
 
 void TorchXor::epoch(int lev) {
-    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::pow(1.25, lev)*alpha));
+    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::pow(1.25, lev)*alpha).momentum(0).weight_decay(0).dampening(0).nesterov(false));
+
     for (auto& batch : *train_loader) {
         optimizer.zero_grad();
 
@@ -76,6 +83,6 @@ void TorchXor::eval(void){
 
 extern "C"{
     Model* build(double alpha){
-        return new TorchXor(1, alpha);
+        return new TorchXor(4, alpha);
     }
 }
