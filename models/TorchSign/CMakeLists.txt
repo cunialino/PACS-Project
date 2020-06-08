@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
 project(torchsign VERSION 1.0.0 LANGUAGES CXX)
 
-set(CMAKE_PREFIX_PATH "${CMAKE_SRC_DIR}../../libs/pytorch/")
+set(CMAKE_PREFIX_PATH "${CMAKE_SRC_DIR}../../libs/libtorch/")
 
 find_package(Torch REQUIRED)
 
