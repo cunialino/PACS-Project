@@ -42,7 +42,7 @@ int main (int argc, char *argv[])
   int           nrelax     = 1;
   int           nrelax0    = -1;
   int           nrelaxc    = 1;
-  double        tol        = 1.0e-06;
+  double        tol        = 1.0e-09;
   int           cfactor    = 2;
   int           max_iter   = 10;
   int           fmg        = 0;
@@ -52,7 +52,7 @@ int main (int argc, char *argv[])
   int           min_coarse = 10;
   int           skip       = 0;
   int           seq        = 0;
-  double base_alpha = 1, max_alpha = 5, mult = 1.25;
+  double base_alpha = 0.1, max_alpha = 1, mult = 2;
 
 
   int           arg_index;
@@ -84,6 +84,10 @@ int main (int argc, char *argv[])
     else if(strcmp(argv[arg_index], "-ba") == 0) {
         arg_index++;
         base_alpha = atof(argv[arg_index++]);
+    }
+    else if(strcmp(argv[arg_index], "-ma") == 0) {
+        arg_index++;
+        max_alpha = atof(argv[arg_index++]);
     }
     else if ( strcmp(argv[arg_index], "-ntime") == 0 ) {
         arg_index++;
@@ -213,7 +217,7 @@ int main (int argc, char *argv[])
     core.SetPrintLevel(print_level);
     core.SetMaxLevels(max_levels);
     core.SetMaxIter(max_iter);
-    core.SetAbsTol(tol*ntime);
+    core.SetAbsTol(tol*std::sqrt(ntime));
     core.SetCFactor(-1, cfactor);
     core.SetNRelax(-1, nrelax);
     core.SetSkip(skip);
