@@ -89,6 +89,10 @@ int main (int argc, char *argv[])
         arg_index++;
         max_alpha = atof(argv[arg_index++]);
     }
+    else if(strcmp(argv[arg_index], "-mult") == 0) {
+        arg_index++;
+        mult = atof(argv[arg_index++]);
+    }
     else if ( strcmp(argv[arg_index], "-ntime") == 0 ) {
         arg_index++;
         ntime = atoi(argv[arg_index++]);
