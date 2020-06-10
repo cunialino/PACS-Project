@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-TorchSign::TorchSign(double lr, double max_lr, double alpha_mult_, int ntime_, int max_levels_, std::string data_file_): data_file(data_file_), alpha(lr), max_alpha(lr), alpha_mult(alpha_mult_), ntime(ntime_), max_levels(max_levels_){
+TorchSign::TorchSign(double lr, double max_lr, double alpha_mult_, int ntime_, int max_levels_, std::string data_file_): data_file(data_file_), alpha(lr), max_alpha(max_lr), alpha_mult(alpha_mult_), ntime(ntime_), max_levels(max_levels_){
 
     //net = torch::nn::Sequential(torch::nn::Linear(2, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 1), torch::nn::Sigmoid());
     net->to(device);
@@ -13,6 +13,7 @@ TorchSign::TorchSign(double lr, double max_lr, double alpha_mult_, int ntime_, i
     unsigned batch_size = dataset.size().value();
     // Data loader
     train_loader = torch::data::make_data_loader(dataset, batch_size);
+    std::cout << "alpha: " << alpha << " | max alpha: " << max_alpha << " | mult: " << alpha_mult << std::endl;
 
 }
 

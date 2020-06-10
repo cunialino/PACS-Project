@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <ctime>
+#include <cmath>
 
 
 //Reading models directory to let you choose what to train
@@ -157,6 +158,9 @@ int main (int argc, char *argv[])
   //Gathering avaiable models 
   std::unordered_map<unsigned, std::string> models_map;
 
+  int actual_ml = std::min(static_cast<double>(max_levels), std::ceil((std::log(ntime)-std::log(min_coarse))/(std::log(cfactor))));
+  if(rank == 0)
+    std::cout << "There will be " << actual_ml << " levels at the end ;) " << std::endl;
   std::string suffix(".so");
   std::filesystem::path cwd = std::filesystem::current_path();
 
