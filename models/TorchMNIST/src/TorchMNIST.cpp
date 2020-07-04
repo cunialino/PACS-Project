@@ -1,7 +1,7 @@
 #include "TorchMNIST.hpp"
 #include <cmath>
 
-TorchMNIST::TorchMNIST(int64_t bs, double lr, std::string data_file_): batch_size(bs), data_file(data_file_), alpha(lr)
+TorchMNIST::TorchMNIST(double base_alpha,double max_alpha,double mult, int ntime,int max_levels, std::string data_file_):alpha(base_alpha), data_file(data_file_)
     {
         net = torch::nn::Sequential( torch::nn::Conv2d(torch::nn::Conv2dOptions(1, 16, 5).stride(1).padding(2)), torch::nn::BatchNorm2d(16), torch::nn::ReLU(),
                 torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2)), torch::nn::Conv2d(torch::nn::Conv2dOptions(16, 32, 5).stride(1).padding(2)),
@@ -14,14 +14,13 @@ TorchMNIST::TorchMNIST(int64_t bs, double lr, std::string data_file_): batch_siz
             .map(torch::data::transforms::Stack<>());
 
         // Data loader
-        train_loader = torch::data::make_data_loader<torch::data::samplers::RandomSampler>(
-            std::move(train_dataset), batch_size);
+        train_loader = torch::data::make_data_loader<torch::data::samplers::RandomSampler>(std::move(train_dataset), std::floor(train_dataset.size().value()/64));
 
     }
 
 
     void TorchMNIST::epoch(int lev) {
-        torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(std::pow(1.25, lev)*alpha));
+        torch::optim::Adam optimizer(net->parameters(), torch::optim::AdamOptions(alpha));
         for (auto& batch : *train_loader) {
             // Transfer images and target labels to device
             auto data = batch.data.to(torch::kDouble);
@@ -32,9 +31,6 @@ TorchMNIST::TorchMNIST(int64_t bs, double lr, std::string data_file_): batch_siz
 
             // Calculate loss
             auto loss = torch::nn::functional::cross_entropy(output, target);
-
-            // Calculate prediction
-            auto prediction = output.argmax(1);
 
             // Backward pass and optimize
             optimizer.zero_grad();
@@ -55,7 +51,7 @@ TorchMNIST::TorchMNIST(int64_t bs, double lr, std::string data_file_): batch_siz
 
           // Data loader
           auto test_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(
-              std::move(test_dataset), batch_size);
+              std::move(test_dataset), std::floor(test_dataset.size().value()/64));
 
           net->eval();
 
@@ -85,7 +81,8 @@ TorchMNIST::TorchMNIST(int64_t bs, double lr, std::string data_file_): batch_siz
           std::cout << "Testset - Loss: " << test_sample_mean_loss << ", Accuracy: " << test_accuracy << '\n';
             }
 extern "C"{
-    Model* build(double alpha){
-        return new TorchMNIST(300, alpha);
+    Model* build(double base_alpha,double max_alpha,double mult, int ntime,int max_levels)
+    {
+        return new TorchMNIST(base_alpha, max_alpha, mult, ntime, max_levels);
     }
 }

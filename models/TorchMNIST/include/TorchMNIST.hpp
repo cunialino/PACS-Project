@@ -12,7 +12,6 @@ using SDL =torch::data::StatelessDataLoader<torch::data::datasets::MapDataset<to
 class TorchMNIST final: public Model{
 
   private:
-    const int64_t batch_size;
     struct view : torch::nn::Module {
         view() { }
         torch::Tensor forward(torch::Tensor input) {
@@ -28,7 +27,7 @@ class TorchMNIST final: public Model{
     torch::nn::Sequential net;
 
   public:
-    TorchMNIST(int64_t bs, double lr, std::string data_file_=std::string("/home/elia/build/pytorch-cpp/data/mnist/"));
+    TorchMNIST( double base_alpha,double max_alpha,double mult, int ntime,int max_levels, std::string data_file_=std::string("/home/elia/build/pytorch-cpp/data/mnist/"));
     void epoch(int lev);
     std::vector<double> get_weights(void){
         torch::Tensor vals = torch::nn::utils::parameters_to_vector(net->parameters()).clone();
