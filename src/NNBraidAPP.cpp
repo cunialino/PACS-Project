@@ -1,19 +1,19 @@
-#include "MyBraidApp.hpp"
+#include "NNBraidApp.hpp"
 #include <cassert>
 
 
 
 // Braid App Constructor
-MyBraidApp::MyBraidApp(MPI_Comm comm_t_, int rank_, std::unique_ptr<Model> &net_, double tstart_, double tstop_, int ntime_):
+NNBraidApp::NNBraidApp(MPI_Comm comm_t_, int rank_, std::unique_ptr<Model> &net_, double tstart_, double tstop_, int ntime_):
     BraidApp(comm_t_, tstart_, tstop_, ntime_), rank(rank_), net(std::move(net_)){ } 
 
 //
-void MyBraidApp::set_weights(std::vector<double> value){
+void NNBraidApp::set_weights(std::vector<double> value){
   net->set_weights(value);
   return;
 }
 
-void MyBraidApp::update_vector(BraidVector * u){
+void NNBraidApp::update_vector(BraidVector * u){
   auto tmp = net->get_weights();
   for(int i = 0; i < net->get_NumP(); i++) {
     u->value[i] = tmp[i];
@@ -21,7 +21,7 @@ void MyBraidApp::update_vector(BraidVector * u){
   }
   return;
 }
-int MyBraidApp::Step(braid_Vector    u_, braid_Vector    ustop_, braid_Vector    fstop_, BraidStepStatus &pstatus) {
+int NNBraidApp::Step(braid_Vector    u_, braid_Vector    ustop_, braid_Vector    fstop_, BraidStepStatus &pstatus) {
    
   BraidVector *u = (BraidVector*) u_;
    
@@ -41,7 +41,7 @@ int MyBraidApp::Step(braid_Vector    u_, braid_Vector    ustop_, braid_Vector   
 
 }
 
-int MyBraidApp::Init(double t, braid_Vector *u_ptr) {
+int NNBraidApp::Init(double t, braid_Vector *u_ptr) {
    
   std::vector<double> vec(net->get_NumP(), 0);
   BraidVector *u = new BraidVector(vec);
@@ -53,7 +53,7 @@ int MyBraidApp::Init(double t, braid_Vector *u_ptr) {
 
 }
 
-int MyBraidApp::Clone(braid_Vector  u_, braid_Vector *v_ptr) {
+int NNBraidApp::Clone(braid_Vector  u_, braid_Vector *v_ptr) {
    BraidVector *u = (BraidVector*) u_;
    BraidVector *v = new BraidVector(u->value); 
    *v_ptr = (braid_Vector) v;
@@ -62,13 +62,13 @@ int MyBraidApp::Clone(braid_Vector  u_, braid_Vector *v_ptr) {
 }
 
 
-int MyBraidApp::Free(braid_Vector u_)
+int NNBraidApp::Free(braid_Vector u_)
 {
    BraidVector *u = (BraidVector*) u_;
    delete u;
    return 0;
 }
-int MyBraidApp::Sum(double       alpha, braid_Vector x_, double       beta, braid_Vector y_) {
+int NNBraidApp::Sum(double       alpha, braid_Vector x_, double       beta, braid_Vector y_) {
    BraidVector *x = (BraidVector*) x_;
    BraidVector *y = (BraidVector*) y_;
    assert(x->value.size() == y->value.size());
@@ -78,7 +78,7 @@ int MyBraidApp::Sum(double       alpha, braid_Vector x_, double       beta, brai
    return 0;
 }
 
-int MyBraidApp::SpatialNorm(braid_Vector  u_, double       *norm_ptr) {
+int NNBraidApp::SpatialNorm(braid_Vector  u_, double       *norm_ptr) {
  double dot = 0;
  BraidVector *u = (BraidVector*) u_;
  for(unsigned  i = 0; i < net->get_NumP(); i++){
@@ -89,13 +89,13 @@ int MyBraidApp::SpatialNorm(braid_Vector  u_, double       *norm_ptr) {
   return 0;
 }
 
-int MyBraidApp::BufSize(int *size_ptr, BraidBufferStatus  &status){
+int NNBraidApp::BufSize(int *size_ptr, BraidBufferStatus  &status){
 
    *size_ptr = (net->get_NumP())*sizeof(double);
    return 0;
 }
 
-int MyBraidApp::BufPack(braid_Vector u_, void *buffer, BraidBufferStatus  &status) {
+int NNBraidApp::BufPack(braid_Vector u_, void *buffer, BraidBufferStatus  &status) {
    BraidVector *u = (BraidVector*) u_;
    double *dbuffer = (double *) buffer;
    
@@ -107,7 +107,7 @@ int MyBraidApp::BufPack(braid_Vector u_, void *buffer, BraidBufferStatus  &statu
    return 0;
 }
 
-int MyBraidApp::BufUnpack(void *buffer, braid_Vector *u_ptr, BraidBufferStatus &status){
+int NNBraidApp::BufUnpack(void *buffer, braid_Vector *u_ptr, BraidBufferStatus &status){
    double *dbuffer = (double *) buffer;
    
    std::vector<double> tmp(net->get_NumP());
@@ -122,7 +122,7 @@ int MyBraidApp::BufUnpack(void *buffer, braid_Vector *u_ptr, BraidBufferStatus &
    return 0;
 }
 
-int MyBraidApp::Access(braid_Vector u_, BraidAccessStatus &astatus) {
+int NNBraidApp::Access(braid_Vector u_, BraidAccessStatus &astatus) {
    BraidVector *u = (BraidVector*) u_;
 
    // Extract information from astatus

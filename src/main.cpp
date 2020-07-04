@@ -14,7 +14,7 @@
 
 //Main library, used to perform MGRIT
 #include <braid.hpp>
-#include "MyBraidApp.hpp"
+#include "NNBraidApp.hpp"
 
 //Abstract class required for models 
 #include "Model.hpp"
@@ -202,7 +202,7 @@ int main (int argc, char *argv[])
   std::unique_ptr<Model> model((*mkr)(base_alpha, max_alpha, mult, ntime, max_levels));
 
   // set up app structure
-  MyBraidApp app(MPI_COMM_WORLD, rank, model, 0, ntime, ntime);
+  NNBraidApp app(MPI_COMM_WORLD, rank, model, 0, ntime, ntime);
   if(seq && rank == 0){
 
     time_t tstart, tend; 

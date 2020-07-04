@@ -1,5 +1,5 @@
-#ifndef _MYBRAIDAPP_HPP_
-#define _MTBRAIDAPP_HPP_
+#ifndef _NNBRAIDAPP_HPP_
+#define _NNBRAIDAPP_HPP_
 
 #include <vector>
 #include <memory>
@@ -18,7 +18,7 @@ public:
 };
 
 
-class MyBraidApp : public BraidApp
+class NNBraidApp : public BraidApp
 {
 protected:
    // BraidApp defines tstart, tstop, ntime and comm_t
@@ -26,7 +26,7 @@ protected:
 
 public:
   // Constructor
-  MyBraidApp(MPI_Comm comm_t_, int rank_, std::unique_ptr<Model> &net, double tstart_ = 0, double tstop_ = 100, int ntime_ = 100);
+  NNBraidApp(MPI_Comm comm_t_, int rank_, std::unique_ptr<Model> &net, double tstart_ = 0, double tstop_ = 100, int ntime_ = 100);
    
   // We will need the MPI Rank
   int rank;
@@ -36,7 +36,7 @@ public:
   std::unique_ptr<Model> net;
 
   // Deconstructor
-  virtual ~MyBraidApp() { net.~unique_ptr(); };
+  virtual ~NNBraidApp() { net.~unique_ptr(); };
 
   // Define all the Braid Wrapper routines
   // Note: braid_Vector == BraidVector*
