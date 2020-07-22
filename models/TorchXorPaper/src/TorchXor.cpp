@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-TorchXor::TorchXor(int64_t bs, double lr, std::string data_file_): batch_size(bs),data_file(data_file_), alpha(lr){
+TorchXor::TorchXor(int64_t bs, double lr, double mlt, std::string data_file_): batch_size(bs),data_file(data_file_), alpha(lr), mult(mlt){
 
     //net = torch::nn::Sequential(torch::nn::Linear(2, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 1), torch::nn::Sigmoid());
     net->to(device);
@@ -22,7 +22,7 @@ TorchXor::TorchXor(int64_t bs, double lr, std::string data_file_): batch_size(bs
 
 
 void TorchXor::epoch(int lev) {
-    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::pow(1.25, lev)*alpha).momentum(0).weight_decay(0).dampening(0).nesterov(false));
+    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::pow(mult, lev)*alpha).momentum(0).weight_decay(0).dampening(0).nesterov(false));
 
     for (auto& batch : *train_loader) {
         optimizer.zero_grad();
@@ -82,7 +82,7 @@ void TorchXor::eval(void){
 }
 
 extern "C"{
-    Model* build(double alpha){
-        return new TorchXor(4, alpha);
+    Model* build(double alpha, double max_alpha, double mult, int ntime, int max_levels){
+        return new TorchXor(4, alpha, mult);
     }
 }

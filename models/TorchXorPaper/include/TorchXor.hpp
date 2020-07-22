@@ -41,13 +41,14 @@ class TorchXor final: public Model{
     const std::string data_file;
     const bool cuda_available = torch::cuda::is_available();
     const double alpha;
+    const double mult;
     torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
     SDL train_loader;
     //torch::nn::Sequential net;
     std::unique_ptr<Net> net = std::make_unique<Net>();
 
   public:
-    TorchXor(int64_t bs, double alpha, std::string data_file_=std::string("data/PaperXor.csv"));
+    TorchXor(int64_t bs, double alpha, double mult, std::string data_file_=std::string("data/PaperXor.csv"));
 
     void epoch(int lev) override;
 
