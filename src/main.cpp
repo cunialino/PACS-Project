@@ -61,7 +61,8 @@ int main (int argc, char *argv[])
   arg_index = 1;
   while (arg_index < argc)
   {
-    if ( strcmp(argv[arg_index], "-help") == 0 ){
+    std::string arg = argv[arg_index];
+    if ( arg.compare("-help") == 0 ){
         if ( rank == 0 ){
            printf("  -ntime <ntime>    : set num time points\n");
            printf("  -ml  <max_levels> : set max levels\n");
@@ -78,79 +79,79 @@ int main (int argc, char *argv[])
         }
         exit(1);
     } 
-    else if(strcmp(argv[arg_index], "-seq") == 0){
+    else if(arg.compare("-seq") == 0){
         arg_index ++;
         seq = 1;
     }
-    else if(strcmp(argv[arg_index], "-ba") == 0) {
+    else if(arg.compare("-ba") == 0) {
         arg_index++;
         base_alpha = atof(argv[arg_index++]);
     }
-    else if(strcmp(argv[arg_index], "-ma") == 0) {
+    else if(arg.compare("-ma") == 0) {
         arg_index++;
         max_alpha = atof(argv[arg_index++]);
     }
-    else if(strcmp(argv[arg_index], "-mult") == 0) {
+    else if(arg.compare("-mult") == 0) {
         arg_index++;
         mult = atof(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-ntime") == 0 ) {
+    else if (arg.compare("-ntime") == 0 ) {
         arg_index++;
         ntime = atoi(argv[arg_index++]);
     }
-    else if (strcmp(argv[arg_index], "-mod") == 0) {
+    else if (arg.compare("-mod") == 0) {
         arg_index++;
         model_path = argv[arg_index++];
     }
-    else if ( strcmp(argv[arg_index], "-pl") == 0 ){
+    else if (arg.compare("-pl") == 0 ){
        arg_index++;
        print_level = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-skip") == 0 ){
+    else if (arg.compare("-skip") == 0 ){
        arg_index++;
        skip = 1;
     }
-    else if ( strcmp(argv[arg_index], "-ml") == 0 ) {
+    else if (arg.compare("-ml") == 0 ) {
         arg_index++;
         max_levels = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-minc") == 0 ) {
+    else if (arg.compare("-minc") == 0 ) {
         arg_index++;
         min_coarse = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-nu") == 0 ) {
+    else if (arg.compare("-nu") == 0 ) {
         arg_index++;
         nrelax = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-nu0") == 0 ) {
+    else if (arg.compare("-nu0") == 0 ) {
         arg_index++;
         nrelax0 = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-nuc") == 0 ) {
+    else if (arg.compare("-nuc") == 0 ) {
         arg_index++;
         nrelaxc = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-tol") == 0 ) {
+    else if (arg.compare("-tol") == 0 ) {
         arg_index++;
         tol = atof(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-cf") == 0 ) {
+    else if (arg.compare("-cf") == 0 ) {
         arg_index++;
         cfactor = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-mi") == 0 ) {
+    else if (arg.compare("-mi") == 0 ) {
         arg_index++;
         max_iter = atoi(argv[arg_index++]);
     }
-    else if ( strcmp(argv[arg_index], "-fmg") == 0 ) {
+    else if (arg.compare("-fmg") == 0 ) {
         arg_index++;
         fmg = 1;
     }
-    else if ( strcmp(argv[arg_index], "-res") == 0 ) {
+    else if (arg.compare("-res") == 0 ) {
         arg_index++;
         res = 1;
     }
-    else if( strcmp(argv[arg_index], "-sync") == 0 ) {
+    else if(arg.compare("-sync") == 0 ) {
         arg_index++;
         sync = 1;
     }
