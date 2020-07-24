@@ -9,7 +9,6 @@
 
 //Reading models directory to let you choose what to train
 #include <string>
-#include <filesystem>
 #include <unordered_map>
 
 //Main library, used to perform MGRIT
@@ -54,6 +53,7 @@ int main (int argc, char *argv[])
   int           skip       = 0;
   int           seq        = 0;
   double base_alpha = 0.1, max_alpha = 1, mult = 2;
+  std::string model_path("models/libtorchxorpaper.so");
 
 
   int           arg_index;
@@ -97,6 +97,10 @@ int main (int argc, char *argv[])
     else if ( strcmp(argv[arg_index], "-ntime") == 0 ) {
         arg_index++;
         ntime = atoi(argv[arg_index++]);
+    }
+    else if (strcmp(argv[arg_index], "-mod") == 0) {
+        arg_index++;
+        model_path = argv[arg_index++];
     }
     else if ( strcmp(argv[arg_index], "-pl") == 0 ){
        arg_index++;
@@ -161,29 +165,8 @@ int main (int argc, char *argv[])
   int actual_ml = std::min(static_cast<double>(max_levels), std::ceil((std::log(ntime)-std::log(min_coarse))/(std::log(cfactor))));
   if(rank == 0)
     std::cout << "There will be " << actual_ml << " levels at the end ;) " << std::endl;
-  std::string suffix(".so");
-  std::filesystem::path cwd = std::filesystem::current_path();
 
-  unsigned indM = 0;
-
-  if(rank == 0)
-    std::cout << "Choose your models by typing its number: " << std::endl;
-  for(auto &p: std::filesystem::directory_iterator("models")){
-    std::string file = p.path().string();
-    if(file.length() >= suffix.length() && (0 == file.compare (file.length() - suffix.length(), suffix.length(), suffix))){
-        if(rank == 0)
-            std::cout << indM << ": " << file << std::endl;
-        std::string fullpath = cwd.string().append("/").append(file);
-        models_map.insert(std::make_pair(indM++, fullpath));
-    }
-  }
-
-  if(rank == 0)
-    std::cin >> indM;
-
-  MPI_Bcast(&indM, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
-
-  void* handle = dlopen(models_map[indM].c_str(), RTLD_NOW);
+  void* handle = dlopen(model_path.c_str(), RTLD_NOW);
 
   if(handle == nullptr){
       std::cerr << dlerror() << std::endl;
