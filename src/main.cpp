@@ -40,14 +40,10 @@ int main (int argc, char *argv[])
   
   int           max_levels = 2;
   int           nrelax     = 1;
-  int           nrelax0    = -1;
-  int           nrelaxc    = 1;
   double        tol        = 1.0e-09;
   int           cfactor    = 2;
   int           max_iter   = 10;
   int           fmg        = 0;
-  int           res        = 0;
-  int           sync       = 0;
   int           print_level = 2;
   int           min_coarse = 10;
   int           skip       = 0;
@@ -64,20 +60,23 @@ int main (int argc, char *argv[])
     std::string arg = argv[arg_index];
     if ( arg.compare("-help") == 0 ){
         if ( rank == 0 ){
-           printf("  -ntime <ntime>    : set num time points\n");
-           printf("  -ml  <max_levels> : set max levels\n");
-           printf("  -nu  <nrelax>     : set num F-C relaxations\n");
-           printf("  -nu0 <nrelax>     : set num F-C relaxations on level 0\n");
-           printf("  -nuc <nrelax>     : set num F-C relaxations on coarsest grid\n");
-           printf("  -tol <tol>        : set stopping tolerance\n");
-           printf("  -cf  <cfactor>    : set coarsening factor\n");
-           printf("  -mi  <max_iter>   : set max iterations\n");
-           printf("  -fmg              : use FMG cycling\n");
-           printf("  -res              : use my residual\n");
-           printf("  -sync             : enable calls to the sync function\n");
-           printf("  -skip             : skip down cycle\n");
+            std::cout << "-ntime    <value>     : set num time points" << std::endl;
+            std::cout << "-ml       <value>     : set max levels" << std::endl;
+            std::cout << "-tol      <value>     : set stopping tolerance" << std::endl;
+            std::cout << "-cf       <value>     : set coarsening factor" << std::endl;
+            std::cout << "-mi       <value>     : set max iterations" << std::endl;
+            std::cout << "-fmg                  : use FMG cycling" << std::endl;
+            std::cout << "-skip                 : skip down cycle" << std::endl;
+            std::cout << "-ba       <value>     : value of alpha on finest level" << std::endl;
+            std::cout << "-ma       <value>     : maxiumum value of alpha on every level" << std::endl;
+            std::cout << "-mult     <value>     : multiplicative factor of alpha between levels" << std::endl;
+            std::cout << "-minc     <value>     : minimum size of the coarse problem" << std::endl;
+            std::cout << "-mod      <value>     : full path to the .so file containing your model" << std::endl;
+            std::cout << "-pl       <value>     : print level of XBraid" << std::endl;
+
         }
-        exit(1);
+        MPI_Finalize();
+        return 0;
     } 
     else if(arg.compare("-seq") == 0){
         arg_index ++;
@@ -119,18 +118,6 @@ int main (int argc, char *argv[])
         arg_index++;
         min_coarse = atoi(argv[arg_index++]);
     }
-    else if (arg.compare("-nu") == 0 ) {
-        arg_index++;
-        nrelax = atoi(argv[arg_index++]);
-    }
-    else if (arg.compare("-nu0") == 0 ) {
-        arg_index++;
-        nrelax0 = atoi(argv[arg_index++]);
-    }
-    else if (arg.compare("-nuc") == 0 ) {
-        arg_index++;
-        nrelaxc = atoi(argv[arg_index++]);
-    }
     else if (arg.compare("-tol") == 0 ) {
         arg_index++;
         tol = atof(argv[arg_index++]);
@@ -146,14 +133,6 @@ int main (int argc, char *argv[])
     else if (arg.compare("-fmg") == 0 ) {
         arg_index++;
         fmg = 1;
-    }
-    else if (arg.compare("-res") == 0 ) {
-        arg_index++;
-        res = 1;
-    }
-    else if(arg.compare("-sync") == 0 ) {
-        arg_index++;
-        sync = 1;
     }
     else {
         arg_index++;
@@ -195,7 +174,7 @@ int main (int argc, char *argv[])
     BraidVector *u = new BraidVector(std::vector<double>(app.net->get_NumP()));
     app.Init(0, (braid_Vector*) (&u));
     std::cout << "Starting serial trainig" << std::endl;
-    for(unsigned i = 0; i < ntime; i++){
+    for(int i = 0; i < ntime; i++){
         app.set_weights(u->value);
         app.net->epoch(0);
         app.update_vector(u);
