@@ -89,7 +89,7 @@ void OpenNNXor::eval(void){
 }
 
 extern "C"{
-    Model* build(double alpha){
+    Model* build(double alpha, double max_alpha, double mult, int ntime, int max_levels){
         return new OpenNNXor(alpha);
     }
 }

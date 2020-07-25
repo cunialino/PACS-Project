@@ -4,7 +4,6 @@
 
 TorchSign::TorchSign(double lr, double max_lr, double alpha_mult_, int ntime_, int max_levels_, std::string data_file_): data_file(data_file_), alpha(lr), max_alpha(max_lr), alpha_mult(alpha_mult_), ntime(ntime_), max_levels(max_levels_){
 
-    //net = torch::nn::Sequential(torch::nn::Linear(2, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 4), torch::nn::Sigmoid(), torch::nn::Linear(4, 1), torch::nn::Sigmoid());
     net->to(device);
     net->to(torch::kDouble);
     NumP = torch::nn::utils::parameters_to_vector(net->parameters()).sizes()[0];
