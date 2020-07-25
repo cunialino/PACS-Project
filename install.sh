@@ -13,3 +13,7 @@ cat opennn/CMakeLists.txt | awk -F"(" '{if($1 == "add_library") print $0" SHARED
 mv opennn/CMakeLists_tmp.txt opennn/CMakeLists.txt
 cmake .
 make opennn
+
+#Build xbraid
+cd ../xbraid
+make braid
