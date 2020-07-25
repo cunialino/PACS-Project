@@ -18,7 +18,9 @@ all: build $(APP_DIR)/$(TARGET) $(ModelsDir)
 
 
 $(ModelsDir): 
+	cmake -S $@ -B $@ 
 	@$(MAKE) --no-print-directory -C $@ all
+	cd -
 	
 
 $(OBJ_DIR)/%.o: %.cpp
