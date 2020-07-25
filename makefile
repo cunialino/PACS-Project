@@ -1,5 +1,5 @@
 CXX      := mpiCC
-CXXFLAGS := -std=gnu++17 -Wall 
+CXXFLAGS := -std=gnu++11 -Wall 
 BRAID_DIR:= libs/xbraid/braid/
 LDFLAGS  := -L$(BRAID_DIR) -lbraid -ldl -lstdc++fs 
 BUILD    := ./build
@@ -12,7 +12,6 @@ SRC      := $(wildcard src/*.cpp)
 OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 ModelsDir := $(shell find  models/ -maxdepth 1 -mindepth 1 -type d)
-#$(info $(ModelsDir))
 
 all: build $(APP_DIR)/$(TARGET) $(ModelsDir)
 
@@ -20,7 +19,6 @@ all: build $(APP_DIR)/$(TARGET) $(ModelsDir)
 $(ModelsDir): 
 	cmake -S $@ -B $@ 
 	@$(MAKE) --no-print-directory -C $@ all
-	cd -
 	
 
 $(OBJ_DIR)/%.o: %.cpp
@@ -39,6 +37,10 @@ build:
 
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
+
+profile: CXXFLAGS += -pg 
+profile: LDFLAGS += -pg
+profile: all
 
 release: CXXFLAGS += -O2
 release: all
