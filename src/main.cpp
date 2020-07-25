@@ -139,13 +139,6 @@ int main (int argc, char *argv[])
     }
   }
 
-  //Gathering avaiable models 
-  std::unordered_map<unsigned, std::string> models_map;
-
-  int actual_ml = std::min(static_cast<double>(max_levels), std::ceil((std::log(ntime)-std::log(min_coarse))/(std::log(cfactor))));
-  if(rank == 0)
-    std::cout << "There will be " << actual_ml << " levels at the end ;) " << std::endl;
-
   void* handle = dlopen(model_path.c_str(), RTLD_NOW);
 
   if(handle == nullptr){
