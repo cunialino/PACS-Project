@@ -15,7 +15,7 @@ void NNBraidApp::set_weights(std::vector<double> value){
 
 void NNBraidApp::update_vector(BraidVector * u){
   auto tmp = net->get_weights();
-  for(int i = 0; i < net->get_NumP(); i++) {
+  for(unsigned i = 0; i < net->get_NumP(); i++) {
     u->value[i] = tmp[i];
 
   }
@@ -26,7 +26,6 @@ int NNBraidApp::Step(braid_Vector    u_, braid_Vector    ustop_, braid_Vector   
   BraidVector *u = (BraidVector*) u_;
    
   int lev;
-  double alpha;
   pstatus.GetLevel(&lev);
   //Set weights
   set_weights(u->value);
