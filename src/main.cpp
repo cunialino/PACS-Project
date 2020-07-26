@@ -139,6 +139,10 @@ int main (int argc, char *argv[])
     }
   }
 
+  int actual_ml = std::min(static_cast<double>(max_levels), std::ceil((std::log(ntime)-std::log(min_coarse))/(std::log(cfactor))));
+  if(rank == 0)
+    std::cout << "There will be " << actual_ml << " levels at the end ;) " << std::endl;
+
   void* handle = dlopen(model_path.c_str(), RTLD_NOW);
 
   if(handle == nullptr){
@@ -155,7 +159,7 @@ int main (int argc, char *argv[])
       MPI_Finalize();
     return 0;
   }
-  std::unique_ptr<Model> model((*mkr)(base_alpha, max_alpha, mult, ntime, max_levels));
+  std::unique_ptr<Model> model((*mkr)(base_alpha, max_alpha, mult, ntime, actual_ml));
 
   // set up app structure
   NNBraidApp app(MPI_COMM_WORLD, rank, model, 0, ntime, ntime);
