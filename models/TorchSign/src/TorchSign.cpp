@@ -18,11 +18,10 @@ TorchSign::TorchSign(double lr, double max_lr, double alpha_mult_, int ntime_, i
 
 
 void TorchSign::epoch(int lev) {
-    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::min(max_alpha, std::pow(alpha_mult, lev)*alpha)).momentum(0).weight_decay(0).dampening(0).nesterov(false));
+    torch::optim::SGD optimizer(net->parameters(), torch::optim::SGDOptions(std::min(max_alpha, std::pow(alpha_mult, lev)*alpha))); //.momentum(0).weight_decay(0).dampening(0).nesterov(false));
 
     auto batch_it = train_loader->begin();
 
-    //std::advance(batch_it, lev);
     auto batch = *batch_it;
     optimizer.zero_grad();
 

@@ -10,7 +10,7 @@
 
 class OpenNNXor final: public Model{
     private:
-        OpenNN::DataSet* data_set = new OpenNN::DataSet("/home/elia/build/xbraid/examples/PACS-Project/data/mydata.csv", ',', false);
+        OpenNN::DataSet* data_set = new OpenNN::DataSet("/home/elia/build/xbraid/examples/PACS-Project/data/xor.csv", ',', false);
 
         std::unique_ptr<OpenNN::TrainingStrategy> training_strategy;
         const double alpha;
