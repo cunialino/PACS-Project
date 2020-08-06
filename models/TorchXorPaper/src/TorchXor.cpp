@@ -11,11 +11,8 @@ TorchXor::TorchXor(int64_t bs, double lr, double mlt, std::string data_file_): b
     auto dataset = CustomDataset(data_file).map(torch::data::transforms::Stack<>());
 
     // Data loader
-    auto num_train = std::round(0.8*dataset.size().value());
-    num_train = dataset.size().value();
-    auto num_test = dataset.size().value() - num_train;
+    auto num_train = dataset.size().value();
     auto samp = torch::data::samplers::RandomSampler(num_train, torch::kDouble);
-    std::cout << "Training - Testing: " << num_train << " - " << num_test << std::endl;
     train_loader = torch::data::make_data_loader(dataset, samp, torch::data::DataLoaderOptions().batch_size(batch_size));
 
 }
