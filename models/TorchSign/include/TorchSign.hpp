@@ -38,10 +38,10 @@ using SDL = std::unique_ptr<torch::data::StatelessDataLoader<torch::data::datase
 class TorchSign final: public Model{
 
   private:
-    const int ntime, max_levels;
     const std::string data_file;
     const bool cuda_available = torch::cuda::is_available();
     const double alpha, max_alpha, alpha_mult;
+    const int ntime, max_levels;
     torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
     SDL train_loader;
     //torch::nn::Sequential net;
@@ -55,7 +55,7 @@ class TorchSign final: public Model{
     std::vector<double> get_weights(void) override {
         torch::Tensor vals = torch::nn::utils::parameters_to_vector(net->parameters()).clone();
         std::vector<double> w(vals.sizes()[0]);
-        for(int i = 0; i < w.size(); i++) {
+        for(int i = 0; i < static_cast<int>(w.size()); i++) {
           w[i] = vals[i].item<double>();
         }
         return w;

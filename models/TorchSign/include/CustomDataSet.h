@@ -14,7 +14,6 @@ class CustomDataset : public torch::data::Dataset<CustomDataset>
 
           io::CSVReader<3> in(file_names_csv);
           double x, y, lab;
-          unsigned count = 0;
           while(in.read_row(x, y, lab)){
             datass.push_back({x, y, lab});
           }

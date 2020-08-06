@@ -19,9 +19,9 @@ class TorchMNIST final: public Model{
     }
     }; 
 
+    const double alpha;
     const std::string data_file;
     const bool cuda_available = torch::cuda::is_available();
-    const double alpha;
     //torch::Device device = (cuda_available ? torch::kCUDA : torch::kCPU) ;
     std::unique_ptr<SDL> train_loader;
     torch::nn::Sequential net;
@@ -32,7 +32,7 @@ class TorchMNIST final: public Model{
     std::vector<double> get_weights(void){
         torch::Tensor vals = torch::nn::utils::parameters_to_vector(net->parameters()).clone();
         std::vector<double> w(vals.sizes()[0]);
-        for(int i = 0; i < w.size(); i++) {
+        for(int i = 0; i < static_cast<int>(w.size()); i++) {
           w[i] = vals[i].item<double>();
 
         }
