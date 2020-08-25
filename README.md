@@ -4,8 +4,16 @@ Elia Cunial (elia.cunial@mail.polimi.it) Advnaced programming for scientific com
 The project is an advanced and flexible implementation of the work in [https://arxiv.org/abs/1708.02276](https://arxiv.org/abs/1708.02276).
 
 ## Requirements
+Tools:
+* make version 4.3
+* cmake version 3.18.2
+* g++ version 10.2.0
+* Open MPI version 4.0.4
 
-make, cmake, g++, mpi, libtorch, OpenNN
+Utilities:
+* wget
+* unzip
+* awk
 
 ## Install
 To install everything you can run the install.sh script that will download and compile the Neural netowrks library used in the examples inside models folder. 
