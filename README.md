@@ -4,11 +4,12 @@ Elia Cunial (elia.cunial@mail.polimi.it) Advnaced programming for scientific com
 The project is an advanced and flexible implementation of the work in [https://arxiv.org/abs/1708.02276](https://arxiv.org/abs/1708.02276).
 
 ## Requirements
-
-* make
-* cmake
-* g++ 
-* mpi
+Tools:
+* make version 4.3
+* cmake version 3.18.2
+* g++ version 10.2.0
+* Open MPI version 4.0.4
+Utilities:
 * wget
 * unzip
 * awk
