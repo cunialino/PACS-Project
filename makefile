@@ -15,11 +15,16 @@ ModelsDir := $(shell find  models/ -maxdepth 1 -mindepth 1 -type d)
 
 all: build $(APP_DIR)/$(TARGET) $(ModelsDir)
 
+mgrit: build $(APP_DIR)/$(TARGET)
+
 
 $(ModelsDir): 
 	cmake -S $@ -B $@ 
 	@$(MAKE) --no-print-directory -C $@ all
 	
+fixed:
+	cmake -D CMAKE_CXX_FLAGS="-DFIXED" -S models/TorchXorPaper -B models/TorchXorPaper
+	@$(MAKE) --no-print-directory -C models/TorchXorPaper all
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -45,6 +50,10 @@ profile: all
 release: CXXFLAGS += -O2
 release: all
 
-clean:
+clean: $(ModelsDir:=clean)
 	-@rm -rvf $(OBJ_DIR)/*
 	-@rm -rvf $(APP_DIR)/*
+
+$(ModelsDir:=clean):
+	@$(MAKE) --no-print-directory -C $(patsubst %clean,%,$@) clean
+

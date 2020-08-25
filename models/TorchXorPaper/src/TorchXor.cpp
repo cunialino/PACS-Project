@@ -10,8 +10,10 @@ TorchXor::TorchXor(int64_t bs, double lr, double mlt, std::string data_file_): b
     NumP = torch::nn::utils::parameters_to_vector(net->parameters()).sizes()[0];
     auto dataset = CustomDataset(data_file).map(torch::data::transforms::Stack<>());
 
+#ifdef FIXED
     std::vector<double> ws({0.5432, 0.3470, 0.4246, 0.2559, 0.2156, 0.4059, -0.5182, -0.2540, -0.4841, -0.2368, 0.3950, -0.4776, 0.2794, -0.1462, 0.0132, -0.2746, 0.2603, 0.0593, -0.3565, 0.2638, -0.3218, 0.0036, -0.0807, 0.4021, -0.0598, 0.1032, -0.1535, -0.1453, 0.1090, 0.3688, 0.0168, -0.0392});
     this->set_weights(ws);
+#endif
     // Data loader
     auto num_train = dataset.size().value();
     auto samp = torch::data::samplers::RandomSampler(num_train, torch::kDouble);
