@@ -5,8 +5,13 @@ The project is an advanced and flexible implementation of the work in [https://a
 
 ## Requirements
 
-*.* make
-*.* cmake, g++, mpi, libtorch, OpenNN
+* make
+* cmake
+* g++ 
+* mpi
+* wget
+* unzip
+* awk
 
 ## Install
 To install everything you can run the install.sh script that will download and compile the Neural netowrks library used in the examples inside models folder. 
